@@ -4,13 +4,13 @@ An example of using the backend
 """
 import sys
 from pathlib import Path
-
+sys.path.append("../")
 import numpy as np
 from matplotlib_backend_qtquick.backend_qtquick import (
     NavigationToolbar2QtQuick)
 from matplotlib_backend_qtquick.backend_qtquickagg import (
     FigureCanvasQtQuickAgg)
-from matplotlib_backend_qtquick.qt_compat import QtGui, QtQml, QtCore
+from PySide2 import QtGui, QtQml, QtCore
 
 
 class DisplayBridge(QtCore.QObject):

@@ -9,11 +9,15 @@ from matplotlib.backend_bases import (
     MouseButton)
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5 import (
-    TimerQT, SPECIAL_KEYS, MODIFIER_KEYS, cursord)
-from .qt_compat import (
-    QtCore, QtGui, QtQuick, QtWidgets,
-    QT_API, QT_API_PYSIDE2)
-
+    TimerQT, SPECIAL_KEYS, cursord)
+from PySide2 import QtCore, QtGui, QtQuick, QtWidgets
+QT_API_PYSIDE2 = "PySide2"
+QT_API = QT_API_PYSIDE2
+try:
+    from matplotlib.backends.backend_qt5 import MODIFIER_KEYS
+except:
+    from matplotlib.backends.backend_qt import _MODIFIER_KEYS as MODIFIER_KEYS
+    print(MODIFIER_KEYS)
 
 class FigureCanvasQtQuick(QtQuick.QQuickPaintedItem, FigureCanvasBase):
     """ This class creates a QtQuick Item encapsulating a Matplotlib
@@ -349,11 +353,8 @@ class NavigationToolbar2QtQuick(QtCore.QObject, NavigationToolbar2):
     def __init__(self, canvas, parent=None):
 
         # I think this is needed due to a bug in PySide2
-        if QT_API == QT_API_PYSIDE2:
-            QtCore.QObject.__init__(self, parent)
-            NavigationToolbar2.__init__(self, canvas)
-        else:
-            super().__init__(canvas=canvas, parent=parent)
+        QtCore.QObject.__init__(self, parent)
+        NavigationToolbar2.__init__(self, canvas)
 
         self._message = ""
 
